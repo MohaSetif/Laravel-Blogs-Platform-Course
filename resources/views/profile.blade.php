@@ -24,10 +24,18 @@
                 View Blogs
             </a>
 
-            <a href="{{ route('logout') }}"
-               class="block bg-red-600 text-white py-2 px-4 rounded-lg shadow hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500">
-                Logout
+            <a href ="{{ route('blogs.user', Auth::user()) }}" 
+               class="block bg-green-600 text-white py-2 px-4 rounded-lg shadow hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500">
+                My Blogs
             </a>
+
+            <form action="{{ route('logout') }}" method="POST" class="inline-block">
+                @csrf
+                <button type="submit"
+                        class="bg-red-600 text-white py-2 px-4 rounded-lg shadow hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500">
+                    Logout
+                </button>
+            </form>
         </div>
 
     </div>

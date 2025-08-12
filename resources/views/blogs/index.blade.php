@@ -34,7 +34,7 @@
                 @endforeach
             </div>
         @else
-            <div class="bg-white p-6 rounded-lg shadow text-center">
+            <div class="bg-white mt-12 p-6 rounded-lg shadow text-center">
                 <p class="text-gray-500 text-lg">No blogs available.</p>
             </div>
         @endif

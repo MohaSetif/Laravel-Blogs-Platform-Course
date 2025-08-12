@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
+use Database\Seeders\AdminSeeder;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -11,10 +13,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/admin', function () {
-    return view('admin.dashboard');
-})->middleware(['auth', 'admin'])->name('admin.dashboard');
-
+Route::get('/admin', [AdminController::class, 'listBlogs'])->middleware(['auth', 'admin'])->name('admin.dashboard');
 
 Route::middleware(['auth', 'verified'])->group(function (){
     Route::get('/dashboard', function () {
@@ -24,6 +23,10 @@ Route::middleware(['auth', 'verified'])->group(function (){
     Route::get('/profile', function () {
         return view('profile');
     })->name("profile");
+
+    Route::get('/blogs/user/{user}', [BlogController::class, 'userBlogs'])->name('blogs.user');
+
+    Route::put('/pending_blogs/{id}', [AdminController::class, 'updateBlogStatus'])->name('admin.updateBlogStatus');
 
     Route::resource('/blogs', BlogController::class);
 

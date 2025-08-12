@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\BlogRequest;
 use App\Models\Blog;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -15,8 +16,16 @@ class BlogController extends Controller
      */
     public function index()
     {
-        $blogs = Blog::all();
+        $blogs = Blog::where('status', 'published')->get();
         return view('blogs.index', compact('blogs'));
+    }
+
+    /**
+     * Display a listing of the user's blogs.
+     */
+    public function userBlogs(User $user){
+        $blogs = Blog::whereBelongsTo($user)->get();
+        return view('blogs.user_blogs', compact('blogs'));
     }
 
     /**
