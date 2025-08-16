@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\BlogCreated;
 use App\Http\Requests\BlogRequest;
 use App\Models\Blog;
 use App\Models\User;
@@ -45,13 +46,16 @@ class BlogController extends Controller
             $path = $request->file('image')->store('images', 'public');
         }
 
-        Blog::create([
+        $blog = Blog::create([
             'title' => $request->title,
             'content' => $request->content,
             'image' => $path ?? null,
             'user_id' => Auth::id(),
             'status' => 'pending',
         ]);
+
+        // Dispatch the BlogCreated event
+        broadcast(new BlogCreated($blog));
 
         return redirect()->route('blogs.index')->with('message', 'Blog created successfully!');
 

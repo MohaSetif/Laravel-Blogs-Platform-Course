@@ -1,7 +1,7 @@
 @extends('Layouts.app')
 
 @section('content')
-<div class="min-h-screen bg-gray-100 py-10 px-4 flex items-center justify-center">
+<div class="min-h-screen bg-gray-100 py-10 px-4 flex items-center justify-center relative">
     <div class="max-w-4xl w-full bg-white rounded-xl shadow-lg p-8">
         
         {{-- Heading --}}
@@ -39,5 +39,49 @@
             </div>
         @endif
     </div>
+
+    {{-- Notifications container --}}
+    <div id="notifications" class="fixed top-5 right-5 space-y-3 z-50"></div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    import './bootstrap';
+
+    window.Echo.channel('blogNotification')
+        .listen('BlogCreated', (e) => {
+            showNotification(`📝 New Blog Created: "${e.blog.title}"`);
+        });
+
+    function showNotification(message) {
+        const container = document.getElementById('notifications');
+
+        // Create notification div
+        const notif = document.createElement('div');
+        notif.className = "bg-white border border-gray-200 shadow-lg rounded-lg p-4 flex items-center justify-between animate-slide-in";
+        notif.innerHTML = `
+            <span class="text-gray-800">${message}</span>
+            <button class="ml-4 text-gray-400 hover:text-gray-600">&times;</button>
+        `;
+
+        // Close on click
+        notif.querySelector('button').onclick = () => notif.remove();
+
+        // Auto-remove after 5s
+        setTimeout(() => notif.remove(), 5000);
+
+        container.appendChild(notif);
+    }
+</script>
+
+<style>
+    @keyframes slide-in {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    .animate-slide-in {
+        animation: slide-in 0.3s ease-out;
+    }
+</style>
+@endpush
