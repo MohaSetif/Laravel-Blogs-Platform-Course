@@ -8,6 +8,19 @@
         <h1 class="text-4xl font-bold text-gray-800 mb-2 text-center">Admin Dashboard</h1>
         <p class="text-gray-500 text-center mb-8">Manage and review blog submissions</p>
 
+        {{-- Blog Count --}}
+        <div class="mb-6">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Blog Submissions</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                @foreach($blogCount as $userId => $count)
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-6">
+                        <h3 class="text-xl font-semibold text-blue-800 mb-2">User ID: {{ $userId }}</h3>
+                        <p class="text-blue-600">Total Blogs: {{ $count->count }}</p>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+
         {{-- Blogs List --}}
         @if($blogs->isEmpty())
             <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 text-center">

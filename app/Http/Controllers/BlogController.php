@@ -54,9 +54,6 @@ class BlogController extends Controller
             'status' => 'pending',
         ]);
 
-        // Dispatch the BlogCreated event
-        broadcast(new BlogCreated($blog));
-
         return redirect()->route('blogs.index')->with('message', 'Blog created successfully!');
 
     }
